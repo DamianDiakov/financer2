@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
     content: [
@@ -6,6 +7,7 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        './node_modules/litepie-datepicker/**/*.js',
     ],
 
     theme: {
@@ -13,7 +15,18 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'litepie-primary': colors.sky, // color system for light mode
+                'litepie-secondary': colors.gray // color system for dark mode
+            }
         },
+        variants:{
+            extend: {
+                cursor: ['disabled'],
+                textOpacity: ['disabled'],
+                textColor: ['disabled']
+              }
+        }
     },
 
     plugins: [require('@tailwindcss/forms')],

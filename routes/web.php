@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\GroupController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,8 +26,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-require __DIR__.'/auth.php';
+    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
+    Route::get('/groups/{group:id}', [GroupController::class, 'show'])->name('groups.show');
+    Route::post('/update/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
+    Route::post('/expense/store', [ExpenseController::class, 'store'])->name('expense.store');
+    Route::delete('/expense/{expense}', [ExpenseController::class, 'destroy'])->name('expense.delete');
+});
+
+
+
+
+require __DIR__ . '/auth.php';
