@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Redirect;
 
 class GroupController extends Controller
 {
@@ -29,7 +30,7 @@ class GroupController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Group/Create');
     }
 
     /**
@@ -40,7 +41,16 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request->all());
+        $group = Group::create([
+            'owner' => Auth::id(),
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+
+        Auth::user()->groups()->attach($group);
+
+        return Redirect::route('groups.index');
     }
 
     /**
@@ -94,5 +104,48 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         //
+    }
+
+    /**
+     * Display the settings menu
+     *
+     * @param  \App\Models\Group  $group
+     * @return \Illuminate\Http\Response
+     */
+    public function settings(Group $group)
+    {
+        return Inertia::render('Group/Settings', [
+            'group' => $group
+        ]);
+    }
+
+    /**
+     * Display the recurrence menu
+     *
+     * @param  \App\Models\Group  $group
+     * @return \Illuminate\Http\Response
+     */
+    public function recurrence(Request $request, Group $group)
+    {
+        // dd($request->all());
+        return Inertia::render('Group/Recurrence', [
+            'group' => $group,
+            'recurrences' => function () use ($group, $request) {
+                if ($request->search) {
+                    $search = $request->search;
+                    return $group->recurrences->filter(function ($item) use ($search) {
+                        return stripos($item['expense_description'], $search) !== false;
+                    });
+                }
+                return $group->recurrences;
+            },
+        ]);
+    }
+
+
+    public function members(Request $request, Group $group)
+    {
+        // dd('In development :) ');
+        return Inertia::render('Group/Members', ['group' => $group,]);
     }
 }

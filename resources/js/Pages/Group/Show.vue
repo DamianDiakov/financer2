@@ -5,8 +5,8 @@ import { Head } from "@inertiajs/inertia-vue3";
 import DatePicker from "@/Components/DatePicker.vue";
 import { computed, ref, watch } from "vue";
 import { Inertia } from "@inertiajs/inertia";
-import ExpensesForm from "@/Components/ExpensesForm.vue";
-import AddExpenseForm from "@/Components/AddExpenseForm.vue";
+import ExpensesForm from "@/Components/Forms/ExpensesForm.vue";
+import AddExpenseForm from "@/Components/Forms/AddExpenseForm.vue";
 
 const props = defineProps({
     group: Object,
@@ -33,35 +33,23 @@ watch(date, (newDate) => {
                 {{ group.title }}
             </h2>
         </template>
-        <GroupLayout>
-            <div class="py-12">
-                <div class="max-w-full mx-auto sm:px-6 lg:px-8">
-                    <div
-                        class="bg-white overflow-hidden shadow-sm sm:rounded-lg"
-                    >
-                        <div
-                            class="p-6 bg-white border-b border-gray-200 min-h-screen"
-                        >
-                            <date-picker
-                                @response="(dateValue) => (date = dateValue)"
-                            ></date-picker>
-                            <add-expense-form
-                                v-if="date != null"
-                                :groupId="group.id"
-                                :date="date"
-                                :key="date"
-                            ></add-expense-form>
+        <GroupLayout :id="group.id">
+            <date-picker
+                @response="(dateValue) => (date = dateValue)"
+            ></date-picker>
+            <add-expense-form
+                v-if="date != null"
+                :groupId="group.id"
+                :date="date"
+                :key="date"
+            ></add-expense-form>
 
-                            <div class="flex flex-col-reverse">
-                                <div v-for="e in expenses" :key="e.id">
-                                    <expenses-form
-                                        :expense="e"
-                                        :groupId="group.id"
-                                    ></expenses-form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="flex flex-col-reverse">
+                <div v-for="e in expenses" :key="e.id">
+                    <expenses-form
+                        :expense="e"
+                        :groupId="group.id"
+                    ></expenses-form>
                 </div>
             </div>
         </GroupLayout>

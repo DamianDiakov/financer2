@@ -9,6 +9,12 @@ class Group extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'owner',
+        'title',
+        'description',
+    ];
+
     public function users()
     {
         return $this->belongsToMany(User::class);
@@ -17,5 +23,10 @@ class Group extends Model
     public function expenses()
     {
         return $this->hasMany(Expense::class);
+    }
+
+    public function recurrences()
+    {
+        return $this->hasMany(Recurrence::class);
     }
 }

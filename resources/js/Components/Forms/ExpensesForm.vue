@@ -16,7 +16,7 @@ const form = reactive({
 });
 
 function submit() {
-    Inertia.post(
+    Inertia.put(
         route("expense.update", {
             expense: props.expense.id,
             groupId: props.groupId,
@@ -27,7 +27,7 @@ function submit() {
 
 function remove() {
     Inertia.delete(
-        route("expense.delete", {
+        route("expense.destroy", {
             expense: props.expense.id,
             groupId: props.groupId,
             date: props.expense.date,

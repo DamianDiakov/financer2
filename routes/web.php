@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\RecurrenceController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +20,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -31,11 +34,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::get('/groups', [GroupController::class, 'index'])->name('groups.index');
-    Route::get('/groups/{group:id}', [GroupController::class, 'show'])->name('groups.show');
-    Route::post('/update/{expense}', [ExpenseController::class, 'update'])->name('expense.update');
-    Route::post('/expense/store', [ExpenseController::class, 'store'])->name('expense.store');
-    Route::delete('/expense/{expense}', [ExpenseController::class, 'destroy'])->name('expense.delete');
+    Route::resources([
+        'groups' => GroupController::class,
+        'expense' => ExpenseController::class
+    ]);
+    Route::get('group/{group}/settings', [GroupController::class, 'settings'])->name('groups.settings');
+    Route::get('group/{group}/recurrence', [GroupController::class, 'recurrence'])->name('groups.recurrence');
+    Route::get('group/{group}/members', [GroupController::class, 'members'])->name('groups.members');
+    Route::put('recurrence/{recurrence}', [RecurrenceController::class, 'update'])->name('recurrence.update');
+    Route::post('recurrence', [RecurrenceController::class, 'store'])->name('recurrence.store');
+
+
+    Route::get('group/{group}/charts', [ChartsController::class, 'index'])->name('charts.index');
 });
 
 
