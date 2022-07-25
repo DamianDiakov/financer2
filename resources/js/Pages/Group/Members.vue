@@ -19,8 +19,9 @@ const props = defineProps({
             </h2>
         </template>
         <GroupLayout :id="group.id">
+            <div class="mx-2 text-lg">Members</div>
             <div class="p-4">
-                <div class="relative mt-1">
+                <div class="relative mt-1 mb-3">
                     <div
                         class="pointer-events-none absolute inset-y-0 right-0 mr-1 flex items-center pr-3"
                     >
@@ -46,7 +47,6 @@ const props = defineProps({
                     />
                 </div>
 
-                <div class="mt-3">Members</div>
                 <hr class="bg-black" />
 
                 <div id="wrapper" class="mt-2 grid md:grid-cols-2 gap-5">

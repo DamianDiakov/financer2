@@ -20,6 +20,14 @@ function period(value, period) {
     return value + " " + period[0].toUpperCase() + period.slice(1) + "s";
 }
 
+function status(active) {
+    return active ? "Active" : "Inactive";
+}
+
+function classes(active) {
+    return active ? "bg-green-400" : "bg-red-400";
+}
+
 watch(
     param,
     _.debounce(() => {
@@ -75,7 +83,7 @@ watch(
                 <tr>
                     <th scope="col" class="px-6 py-3">Description</th>
                     <th scope="col" class="px-6 py-3">Amount</th>
-                    <th scope="col" class="px-6 py-3">Active</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3">Period</th>
                     <th scope="col" class="px-6 py-3">
                         <span class="sr-only">Edit</span>
@@ -95,7 +103,14 @@ watch(
                         {{ recurrence.expense_description }}
                     </th>
                     <td class="px-6 py-4">{{ recurrence.expense_amount }}</td>
-                    <td class="px-6 py-4">{{ recurrence.active }}</td>
+                    <td class="px-6 py-4">
+                        <span
+                            :class="[classes(recurrence.active)]"
+                            class="p-1 font-semibold uppercase text-xs text-black"
+                        >
+                            {{ status(recurrence.active) }}
+                        </span>
+                    </td>
                     <td class="px-6 py-4">
                         {{ period(recurrence.period_value, recurrence.period) }}
                     </td>

@@ -53,6 +53,7 @@ const submit = () => {
                                 id="amount"
                                 type="text"
                                 v-model="form.amount"
+                                placeholder="10.00"
                                 class="mt-1 block w-full"
                             />
                         </div>
@@ -64,6 +65,7 @@ const submit = () => {
                             <BreezeInput
                                 id="Description"
                                 v-model="form.description"
+                                placeholder="Something that you buy often"
                                 type="text"
                                 class="mt-1 block w-full"
                             />
